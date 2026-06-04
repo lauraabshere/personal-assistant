@@ -6,8 +6,6 @@ trigger: "start my day | plan my day | morning sweep | mid-day sweep | end of da
 
 # RSG Personal Assistant
 
-> **First-time setup:** Fill in the `## Who I Am` section below with your own details before using this skill.
-
 ## Who I Am
 
 - **Name:** [YOUR NAME] — [YOUR TITLE]
@@ -15,6 +13,34 @@ trigger: "start my day | plan my day | morning sweep | mid-day sweep | end of da
 - **HubSpot owner ID:** `[YOUR_HUBSPOT_OWNER_ID]`
 - **Basecamp RSG account:** `5708130`
 - **Basecamp CLI path:** `~/.local/bin/basecamp`
+
+---
+
+## 🚀 First-Time Setup (Auto-Detect)
+
+**If any placeholder above still says `[YOUR NAME]`, `[your@email.com]`, or `[YOUR_HUBSPOT_OWNER_ID]`, run this setup before doing anything else.**
+
+Tell Claude: **"Set me up"** or **"Run first-time setup"** and Claude will:
+
+1. **Find your HubSpot owner ID automatically** — query the HubSpot MCP:
+   - Call `get_user_details` to retrieve the currently authenticated user
+   - Extract the `ownerId` field — that is your HubSpot owner ID
+   - If not found, ask: *"What is your HubSpot owner ID? You can find it in HubSpot → Settings → Users."*
+
+2. **Find your Google Calendar IDs automatically** — query the Calendar MCP:
+   - Call `list_calendars` to retrieve all calendars the user has access to
+   - Present the list and ask: *"Which of these is your primary work calendar?"*
+   - Record the selected calendar ID
+
+3. **Confirm your name, title, and email** — ask the user directly:
+   - *"What's your name and title?"*
+   - *"What's your work email?"*
+
+4. **Update this SKILL.md file** with the confirmed values — replace every placeholder with the real data so future runs are instant.
+
+5. **Confirm setup is complete** — show a summary of what was filled in and say: *"You're all set! Try 'start my day' to run your first sweep."*
+
+**Until setup is complete, do not attempt to run the daily sweep** — it will produce errors or wrong results.
 
 ---
 
@@ -38,12 +64,14 @@ Never rely on memory alone for the date — always verify with the clock.
 ## Daily Sweep — Run In This Order
 
 ### 1. Google Calendar
-Pull ALL calendars for the day. Update this list with your own calendar IDs:
-- `[your-primary@email.com]` — personal/primary
+Pull ALL calendars for the day. Shared RSG calendars everyone should have:
+- `[YOUR_PRIMARY_CALENDAR_ID]` — your personal/primary (set during first-time setup)
 - `c_0rhv1tc5l3hk41fvfvr96rl6ho@group.calendar.google.com` — Momentum Staff Calendar
 - `ggimavndh8vcnf0en8kdfkogpfnsdcmu@import.calendar.google.com` — Momentum Staff HQ
 - `c_fe5646a346c6241bea5752d72bd4c8dd13b6edaf0148ff295a3edb6646e7539f@group.calendar.google.com` — OS Fundamental Labs
 - `c_ced2ec4c35a4758ba01c769859b2e1f4c48fabb78462047faf28ed9bca261da4@group.calendar.google.com` — OS Advanced Labs
+
+> If `[YOUR_PRIMARY_CALENDAR_ID]` is still a placeholder, run first-time setup first.
 
 Note: Joel is often traveling — check for all-day travel events that affect availability.
 
