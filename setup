@@ -1,0 +1,25 @@
+#!/bin/bash
+# RSG Personal Assistant Skill — Setup Script
+# This skill has no build dependencies. It is a pure SKILL.md instruction set.
+
+set -e
+
+echo "RSG Personal Assistant skill ready."
+echo ""
+echo "Usage:"
+echo "  /personal-assistant   — start your day / full sweep"
+echo ""
+echo "Before first use, open SKILL.md and fill in:"
+echo "  - Your name and title"
+echo "  - Your email address"
+echo "  - Your HubSpot owner ID"
+echo "  - Your personal Google Calendar ID"
+echo ""
+echo "Requires:"
+echo "  - Basecamp CLI at ~/.local/bin/basecamp (run: basecamp auth login)"
+echo "  - HubSpot MCP configured in Claude Code"
+echo "  - Gmail MCP configured in Claude Code"
+echo "  - Google Calendar MCP configured in Claude Code"
+echo ""
+echo "First time? Run: basecamp auth login"
+echo "  - Select Ready Set Grow (5708130) as your account"
