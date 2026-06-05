@@ -73,17 +73,12 @@ Pull ALL calendars for the day. Shared RSG calendars everyone should have:
 
 > If `[YOUR_PRIMARY_CALENDAR_ID]` is still a placeholder, run first-time setup first.
 
-Note: Joel is often traveling — check for all-day travel events that affect availability.
 
 ### 2. Gmail
 Look for:
 - Action-required emails (approvals, responses needed, follow-ups)
-- BILL.com payment approvals
 - Basecamp pings/notifications
-- HubSpot notifications
-- Aircall support tickets
-- New Kajabi sales (log contacts in HubSpot if not already there)
-- Coaching call recordings ready (flag for attendance upload)
+- HubSpot notifications 
 
 ### 3. HubSpot Tasks
 Filter to your tasks only — owner ID `[YOUR_HUBSPOT_OWNER_ID]`.
@@ -136,7 +131,7 @@ Check:
 ```bash
 ~/.local/bin/basecamp notifications read <notification_id>
 ```
-This marks it read in Basecamp so it won't appear on the next sweep either.
+This marks it read in Basecamp  or Hubspot so it won't appear on the next sweep either.
 
 **Date scoping does NOT apply to notifications.** Tasks get filtered by date — notifications never do.
 
@@ -156,10 +151,8 @@ For direct Pings (Basecamp DMs): the CLI has limited access to these. If you sus
 # ~/.local/bin/basecamp reports upcoming --json
 ```
 Key projects:
-- **Finance HQ** — finance tasks
 - **Momentum Staff HQ** — staff communications
-- **HubSpot & Sonamation** — Sonamation partnership project (ID: 45617297)
-- **Workshop projects** — monthly workshop prep
+- **Content Tracking** — due dates for writing deliverables
 
 ### 7. Cycle Rocks (weekly or when requested)
 - Only surface rocks assigned to you
@@ -175,10 +168,8 @@ Key projects:
 The overdue report can show tasks already removed or completed. Never surface stale data.
 
 ### What to Never Surface
-- **NEVER** mention the John Hancock email or thread. Ever. Under any circumstances.
 - Do not surface tasks that are completed (verify live)
 - Do not surface tasks not actually assigned to you
-- Do not surface sample/test HubSpot tasks (e.g. "Sample task - Follow up with Brian")
 
 ### HubSpot Task Rules
 - **FYI tasks (dropped by Scott or others):** Always surface these if you are tagged. A tag means someone needs your eyes on it — you still need to see it even if the action belongs to someone else.
@@ -186,7 +177,7 @@ The overdue report can show tasks already removed or completed. Never surface st
 - **Completed tasks:** Never surface. Verify live before showing.
 
 ### HubSpot Ticket Rules
-- Emily Wilson owns the ticketing system. She manages all client questions coming in from Basecamp.
+- Emily Wilson owns the ticketing system. She manages all client questions coming in from Basecamp & Kajabi.
 - You will only be tagged in a ticket when you are needed to help answer a specific client question.
 - When tagged: surface it clearly as it needs your input.
 - Check both tickets assigned to you AND recently updated open tickets where you may be tagged.
@@ -212,11 +203,13 @@ For operations not covered by CLI commands (e.g., creating groups within todolis
 ## Key Contacts & Context
 
 ### RSG Team
-- **Scott** — Lead Pastor / primary leader
-- **Hunter** — organizer, created recurring events
-- **Emily Wilson** — team member, often relays client questions
-- **Joel Hornstien** — team member, often in Dallas/traveling
-- **Mark Brewer** — team member
+- **Scott** — President/ Co-Founder / Lead Pastor / visionary leader
+- **Hunter** — Co-Founder / CEO / Visionary Driver
+- **Emily Wilson** — product manager / excutive asssitant to scott & jenni wilson / often relays client questions
+- **Joel Hornstien** — marketing director / lives in Tulsa communtes to Dallas often 
+- **Mark Brewer** — Product Director / direct contact for Pastors
+- **Jenni Wilson** - Events Manager
+- **Brett Bouck** - Video Manager
 
 ### RSG — Sonamation Partnership
 - Sonamation integration work tracked in **HubSpot & Sonamation** Basecamp project (RSG account 5708130, project ID: 45617297)
@@ -231,9 +224,8 @@ For operations not covered by CLI commands (e.g., creating groups within todolis
 
 | Project | ID |
 |---------|----|
-| HubSpot & Sonamation | 45617297 |
-| Finance HQ | 35083395 |
-| Momentum Staff HQ | (search by name) |
+| Content Tracking | 47359908 |
+| Momentum Staff HQ | 35081390 |
 
 ---
 
@@ -394,9 +386,6 @@ Get the `app_url` field from CLI JSON output — it returns the direct link. Alw
 ### Gmail Links
 - When referencing an email, link to it: `https://mail.google.com/mail/u/0/#inbox/{thread_id}`
 - If thread ID is not available, link to inbox: `https://mail.google.com`
-
-### BILL.com
-- Always link directly: `https://app.bill.com`
 
 ### Zoom Meeting Links
 - Use the `location` field from the calendar event — it is the direct join or registration URL
