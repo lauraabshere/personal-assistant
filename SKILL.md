@@ -548,10 +548,116 @@ Every Monday:
 
 ---
 
-## Quick Notification Sweep
-Run `/notification-sweep` any time for a focused, fast check of all unread notifications without doing a full day plan. Same rules apply — everything hyperlinked.
+## 🔔 Quick Notification Sweep
 
-Scheduled sweeps fire automatically at 7:50, 9:50, 11:50am, 1:50, 3:50, and 4:30pm on weekdays. `/notification-sweep` is for any time in between.
+A focused, fast check of everything unread or action-required — no full day plan, just what's new and needs your eyes. Trigger any time: **"check notifications"**, **"what did I miss"**, **"quick sweep"**.
+
+### Step 0 — Get Current Time
+```bash
+TZ="America/Chicago" date "+%A, %B %-d, %Y %I:%M %p %Z"
+```
+
+### Step 1 — Basecamp Notifications (RSG)
+```bash
+~/.local/bin/basecamp notifications list --json
+```
+
+Parse `data.unreads`. Present in this exact order:
+
+1. 📲 **Pings** — direct DMs. CLI has limited access; if you suspect missed pings, check `https://app.basecamp.com/pings` visually. If none detected: say "None."
+
+2. 📝 **Daily Check-ins** — your two recurring Momentum Staff HQ check-ins. Surface every sweep.
+
+   **Always verify live whether you've answered today** — do NOT rely on notification state alone. Fetch the answers and look for your name in today's entries:
+   ```bash
+   ~/.local/bin/basecamp api get "buckets/35081390/questions/8405158538/answers.json" 2>&1
+   ~/.local/bin/basecamp api get "buckets/35081390/questions/8405160895/answers.json" 2>&1
+   ```
+   If your name appears today → mark "Done ✅". If not → show the link with timing label.
+
+   **Daily (every day):**
+   - 🌅 **[What's Your Daily 3?](https://app.basecamp.com/5708130/buckets/35081390/questions/8405158538)** → post by 9:00 AM
+   - 🌇 **[How'd today go? (Daily R.E.P.S.)](https://app.basecamp.com/5708130/buckets/35081390/questions/8405160895)** → post by 4:00 PM
+
+   **Mondays only:**
+   - 🌅 **[What's Your Weekly 3?](https://app.basecamp.com/5708130/buckets/35081390/questions/8405151231)** → post Monday morning
+
+3. 📋 **Tasks** — two types:
+   - `type = Assignment` — someone assigned you a task
+   - `type = Reminder` AND title starts with "Due soon:" — only show if task is due TODAY or overdue
+
+4. 🔔 **Mentions** — `type = Mention`. Someone @-tagged you directly.
+
+5. 💬 **All Other Notifications** — Comments, Completions, Events, Messages, Questions, Documents, and any Reminders not captured above. Lowest priority. Group by project.
+
+**Rules:**
+- Show ALL unread — no date filter (except "Due soon:" reminders, which only show if due today or overdue)
+- Pull live every time — `data.unreads` is the source of truth
+- Mark handled via: `~/.local/bin/basecamp notifications read <id>`
+- Link every item via its `app_url`
+
+### Step 2 — Gmail
+Search for unread emails sent to `[YOUR_EMAIL]`:
+
+```
+is:unread to:[YOUR_EMAIL] newer_than:1d
+```
+
+Look for:
+- Emails requiring a response or approval
+- Basecamp and HubSpot notifications
+- Vendor or event coordinator emails
+- Staff replies that need a response
+
+### Step 3 — HubSpot Tasks & Tickets
+
+**Tasks** — owner ID `[YOUR_HUBSPOT_OWNER_ID]`:
+- Status ≠ COMPLETED, due today or overdue only
+- Skip sample tasks
+
+**Tickets** — owner ID `[YOUR_HUBSPOT_OWNER_ID]`:
+- Assigned to you OR recently updated open tickets where you may be tagged
+- Surface high-priority first
+
+### Output Format
+
+```
+### 🔔 Notification Sweep — [Weekday, Month Day, Time CDT]
+
+**Basecamp RSG** — [X unread]
+
+📲 Pings
+- None (or item with link)
+
+📝 Daily Check-ins
+- 🌅 [What's Your Daily 3?](url) — post by 9 AM (or "Done ✅")
+- 🌇 [How'd today go? R.E.P.S.](url) — post by 4 PM (or "Done ✅")
+
+📋 Tasks
+- [item](url) — [project] — due [date]
+
+🔔 Mentions
+- [item](url) — [project] — [date]
+
+💬 All Other Notifications
+[grouped by project]
+
+---
+
+**Gmail — Action Needed**
+- [Subject](gmail_link) — [Sender] — [why it needs attention]
+- (or "Nothing new")
+
+**HubSpot Tasks — Due Today / Overdue**
+- [Task name](hubspot_task_link) — due [date]
+- (or "All clear")
+
+**HubSpot Tickets**
+- [Ticket title](hubspot_ticket_link) — [status]
+- (or "Nothing new")
+```
+
+End with: **"Want me to handle any of these?"**
 
 ---
 
