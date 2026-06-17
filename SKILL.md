@@ -1,7 +1,7 @@
 ---
-name: personal-assistant
-description: RSG personal assistant — daily sweep, planning, and task management across HubSpot, Basecamp, Gmail, and Google Calendar.
-trigger: "start my day | plan my day | morning sweep | mid-day sweep | end of day | what do I have today | check everything"
+name: rsg-team-setup
+description: RSG personal assistant — onboarding, daily sweep, Daily 3, R.E.P.S., 3-6-5 cycle rocks, and Tomorrow Preview.
+trigger: "start my day | plan my day | morning sweep | mid-day sweep | end of day | what do I have today | check everything | set me up | rsg-team-setup"
 ---
 
 # RSG Personal Assistant
@@ -13,34 +13,82 @@ trigger: "start my day | plan my day | morning sweep | mid-day sweep | end of da
 - **HubSpot owner ID:** `[YOUR_HUBSPOT_OWNER_ID]`
 - **Basecamp RSG account:** `5708130`
 - **Basecamp CLI path:** `~/.local/bin/basecamp`
+- **Setup complete:** `[NO — run first-time setup]`
 
 ---
 
-## 🚀 First-Time Setup (Auto-Detect)
+## 🚀 First-Time Setup — Smart Onboarding
 
-**If any placeholder above still says `[YOUR NAME]`, `[your@email.com]`, or `[YOUR_HUBSPOT_OWNER_ID]`, run this setup before doing anything else.**
+**Runs automatically the first time you invoke this skill.** The assistant checks for `Setup complete: YES` above. If not set, run the onboarding interview before anything else. Once complete, every future run skips straight to the daily sweep.
 
-Tell Claude: **"Set me up"** or **"Run first-time setup"** and Claude will:
+Tell Claude **"Set me up"** or **"Run first-time setup"** to begin.
 
-1. **Find your HubSpot owner ID automatically** — query the HubSpot MCP:
-   - Call `get_user_details` to retrieve the currently authenticated user
-   - Extract the `ownerId` field — that is your HubSpot owner ID
-   - If not found, ask: *"What is your HubSpot owner ID? You can find it in HubSpot → Settings → Users."*
+---
 
-2. **Find your Google Calendar IDs automatically** — query the Calendar MCP:
-   - Call `list_calendars` to retrieve all calendars the user has access to
-   - Present the list and ask: *"Which of these is your primary work calendar?"*
-   - Record the selected calendar ID
+### Onboarding Interview
 
-3. **Confirm your name, title, and email** — ask the user directly:
-   - *"What's your name and title?"*
-   - *"What's your work email?"*
+Ask questions **one at a time**, in order. After reading the Ideal Week answer, check whether it already answers Q3–Q6 — only ask what isn't already clear.
 
-4. **Update this SKILL.md file** with the confirmed values — replace every placeholder with the real data so future runs are instant.
+---
 
-5. **Confirm setup is complete** — show a summary of what was filled in and say: *"You're all set! Try 'start my day' to run your first sweep."*
+**Q1 — Ideal Week** *(always ask first)*
 
-**Until setup is complete, do not attempt to run the daily sweep** — it will produce errors or wrong results.
+> "Do you have an **Ideal Week** document? If yes, share it — paste it here, or share a Notion/Google Doc link. If you don't have one yet, just describe your ideal work week in a few sentences: when do you prefer deep work, when are you available for your team, any protected time blocks?"
+
+Read the response carefully. The Ideal Week often answers office patterns, remote preferences, and calendar trigger rules. Before asking Q3–Q6, check what's already covered and skip those questions.
+
+---
+
+**Q2 — Location for Weather** *(always ask)*
+
+> "What city and state are you in? I'll use this for weather in your Tomorrow Preview."
+
+---
+
+**Q3 — Office Location** *(ask only if not clear from Ideal Week)*
+
+> "Do you have a regular office or workplace? If yes, what's the location, and what typically puts you there — specific days, certain meeting types, or other conditions?
+>
+> For RSG team members: **Review & Preview** and **Workshop** on the Momentum Staff Calendar are standard office-day triggers. Do these apply to you?"
+
+If they say no regular office → set **LOCATION_MODE = remote**. If they describe an office → set **LOCATION_MODE = local**.
+
+---
+
+**Q4 — Remote Work Location** *(ask only if not clear from Ideal Week)*
+
+> "When you're not in the office, where do you prefer to work? If it's a specific place (a coffee shop, home office, co-working space), tell me its name — I'll use it when suggesting your work location."
+
+---
+
+**Q5 — Personal Calendar Patterns** *(ask only if not clear from Ideal Week)*
+
+> "Are there personal calendar patterns that affect your 8–5 availability? If you add personal appointments to your calendar when they impact your work day, I'll check there too."
+
+---
+
+**Q6 — HubSpot & Basecamp** *(always ask)*
+
+> "Let me look up your HubSpot owner ID automatically." *(call `get_user_details` from the HubSpot MCP, extract `ownerId`)*
+>
+> If not found: "What is your HubSpot owner ID? Find it in HubSpot → Settings → Users."
+>
+> "Which calendar is your primary work calendar?" *(call `list_calendars` and present the list)*
+
+---
+
+### After the Interview
+
+1. Fill in all placeholders in the "Who I Am" section above with real values
+2. Change `Setup complete:` from `[NO — run first-time setup]` to `YES`
+3. Save a setup memory file so future runs skip onboarding
+4. Show a confirmation summary
+
+> "You're all set! Try **'start my day'** to run your first sweep."
+
+**LOCATION_MODE is inferred — never asked directly:**
+- User describes an office → `local` (office day logic and location suggestions apply)
+- User says no regular office → `remote` (all days are flex, no office prompts)
 
 ---
 
@@ -73,12 +121,13 @@ Pull ALL calendars for the day. Shared RSG calendars everyone should have:
 
 > If `[YOUR_PRIMARY_CALENDAR_ID]` is still a placeholder, run first-time setup first.
 
+**Momentum Calendar = True North for office days.** If "Review & Preview" or "Workshop" appears on a given day → that day is an office day for local team members (follows the event if it moves).
 
 ### 2. Gmail
 Look for:
 - Action-required emails (approvals, responses needed, follow-ups)
 - Basecamp pings/notifications
-- HubSpot notifications 
+- HubSpot notifications
 
 ### 3. HubSpot Tasks
 Filter to your tasks only — owner ID `[YOUR_HUBSPOT_OWNER_ID]`.
@@ -117,13 +166,16 @@ Check:
 **Present notifications in this exact order (most important → noise):**
 1. 📲 **Pings** — direct DMs. CLI has limited access; if you suspect missed pings use `/browse` to open `https://app.basecamp.com/pings`. If none detected: say "None."
 2. 📝 **Daily Check-ins** — Your two recurring Momentum Staff HQ check-ins. Surface every sweep.
-   - 🌅 **What's Your Daily 3?** — do first thing in the morning
-   - 🌇 **How'd today go? (Daily R.E.P.S.)** — do at end of day
+   - 🌅 **What's Your Daily 3?** — do first thing in the morning (target: by 9:00 AM)
+   - 🌇 **How'd today go? (Daily R.E.P.S.)** — do at end of day (target: by 4:00 PM)
    If already answered today, mark "Done ✅". If unanswered, show the link.
    Detect by: title contains "Daily 3" or "R.E.P.S.", bucket = "Momentum Staff HQ"
+   Known good links:
+   - Daily 3: `https://app.basecamp.com/5708130/buckets/35081390/questions/8405158538`
+   - R.E.P.S.: `https://app.basecamp.com/5708130/buckets/35081390/questions/8405160895`
 3. 📋 **Tasks** — includes TWO types:
    - `type = Assignment` — someone assigned you a task
-   - `type = Reminder` AND title starts with "Due soon:" — task due-date reminders
+   - `type = Reminder` AND title starts with "Due soon:" — task due-date reminders (show only if due today or overdue)
 4. 🔔 **Mentions** — type = `Mention`. Someone @-tagged you directly.
 5. 💬 **All Other Notifications** — Comments, Completions, Events, Messages, Questions, Documents, BoostReports, and Reminders not captured above. Good for awareness, lowest priority. Group by project within this section.
 
@@ -131,7 +183,7 @@ Check:
 ```bash
 ~/.local/bin/basecamp notifications read <notification_id>
 ```
-This marks it read in Basecamp  or Hubspot so it won't appear on the next sweep either.
+This marks it read in Basecamp so it won't appear on the next sweep either.
 
 **Date scoping does NOT apply to notifications.** Tasks get filtered by date — notifications never do.
 
@@ -158,6 +210,159 @@ Key projects:
 - Only surface rocks assigned to you
 - If no clear progress is visible, ask what the plan is
 - RSG Cycle Rock dashboard is in Basecamp card tables
+- See "🪨 Cycle Rocks — Status & Countdown" section below for full instructions
+
+---
+
+## 📝 Daily Check-ins — Daily 3 & R.E.P.S.
+
+### Morning: Daily 3 (post by 9:00 AM)
+
+Your **Daily 3** are the three things you're moving forward on today. They come from:
+- 🪨 **Cycle Rocks** — your commitments for this cycle (soft number, typically 3, can be 1–6)
+- 📋 **6 Responsibilities** — your ongoing ownership areas
+
+Daily 3 is about **focus** — you'll do many other tasks, but these are the three you're intentionally driving forward today.
+
+When helping draft a Daily 3:
+1. Check what cycle rocks are in progress (see Cycle Rocks section)
+2. Check what's due today from Basecamp and HubSpot
+3. Suggest 3 specific action items grounded in rocks + responsibilities
+4. Post in **Momentum Staff HQ → "What's Your Daily 3?"** check-in
+
+Link: `https://app.basecamp.com/5708130/buckets/35081390/questions/8405158538`
+
+---
+
+### End of Day: R.E.P.S. (post by 4:00 PM)
+
+R.E.P.S. is your **end-of-day reflection**. Rate each Daily 3 item using this scale:
+
+| Emoji | Meaning |
+|-------|---------|
+| ✅ | Done — fully complete |
+| 🟢 | Done — could have been more thorough |
+| 🟡 | In progress — meaningful movement forward |
+| 🔴 | Started — not where I wanted to be |
+| ❌ | Didn't get to it |
+
+**The R.E.P.S. Framework:**
+
+- **Reflect:** What are some wins from today?
+- **Evaluate:** Did you complete your Daily 3? *(Rate each item with the emoji scale above)*
+- **Plan:** What are your Daily 3 for tomorrow?
+- **Strengthen:** What adjustments can you make to be more productive tomorrow?
+
+Post in **Momentum Staff HQ → "How'd today go? (Daily R.E.P.S.)"** check-in by 4:00 PM.
+
+Link: `https://app.basecamp.com/5708130/buckets/35081390/questions/8405160895`
+
+To draft your R.E.P.S., run the `/reps` skill or ask "draft my R.E.P.S." — it will pull your actual Daily 3 from Basecamp automatically.
+
+---
+
+## 🔄 3-6-5 — Cycle Start
+
+At the **start of every cycle**, you review and reset your 3-6-5:
+
+- 🪨 **Cycle Rocks** — what you're shipping this cycle (soft 3, can be 1–6)
+- 📋 **6 Responsibilities** — your ongoing ownership areas
+- ❤️ **5 Core Values** — team values that anchor the work
+
+During cooldown, every team member reviews their 3-6-5 on Notion. At cycle kick-off, the assistant prompts for an update.
+
+**How to detect a new cycle:**
+Check the Momentum Staff Calendar (`c_0rhv1tc5l3hk41fvfvr96rl6ho@group.calendar.google.com`) for a "Kick-off" or "Cycle [N] Kick-off" event within the last 3 days.
+
+**When a new cycle is detected:**
+1. Say: "New cycle is starting! Time to update your 3-6-5. During cooldown you reviewed your cycle rocks, responsibilities, and values on Notion. Share your Notion page link and I'll pull your updated priorities."
+2. Read the Notion page via the Notion MCP
+3. Extract rocks, responsibilities, and values
+4. **Core values:** "Same as last cycle?" — if yes, skip re-read; if no, ask them to paste the new ones
+5. **Responsibilities:** Always re-read — they change ~50% of cycles
+6. **Rocks:** Always re-read — these are new every cycle by design
+7. Save to memory for the full cycle so every Daily 3 and R.E.P.S. draft has context
+
+**Cycle rocks are the backbone of the Daily 3.** Every morning, check which rocks are in progress when suggesting today's Daily 3.
+
+---
+
+## 🪨 Cycle Rocks — Status & Countdown
+
+When surfacing cycle rocks (at cycle start, weekly check-in, or when asked):
+
+### Step 1 — Get Cycle End Date
+Check the Momentum Staff Calendar for the current cycle's end date (look for event named "End of Cycle [N]" or "Cycle [N] End"). Calculate weeks remaining.
+
+### Step 2 — Pull Rock Cards
+```bash
+~/.local/bin/basecamp api get "buckets/35081390/card_tables.json" 2>&1
+```
+Find cards assigned to you. Pull each card's status.
+
+### Step 3 — Present with Countdown
+Show: **"Cycle [N] ends [date] — [X] weeks left"**
+
+Rate each rock:
+- 🟢 On track — clear path to done by cycle end
+- 🟡 Needs attention — at risk of not finishing, needs a plan
+- 🔴 At risk — behind, needs immediate focus or scope cut
+- ✅ Complete — shipped
+
+If the cycle is in its final 2 weeks: flag any rocks still at 🟡 or 🔴 as urgent.
+
+---
+
+## 🌅 Tomorrow Preview
+
+At the end of each day (or when asked "what's tomorrow look like?"), generate a Tomorrow Preview:
+
+### Step 1 — Weather
+```bash
+curl -s "https://wttr.in/[YOUR_CITY]?format=j1"
+```
+Extract: high/low temp, conditions, precipitation chance, wind speed.
+Flag if wind > 20 mph or rain > 30% → note a reminder to check conditions before commuting.
+
+### Step 2 — Suggested Work Location
+*(For local LOCATION_MODE only; skip for remote)*
+
+Check tomorrow's Momentum Staff Calendar:
+- If "Review & Preview" or "Workshop" is on the calendar → **office day**
+- Otherwise → apply your day-of-week defaults (configured during onboarding)
+- If calendar is light and flexible → lean toward your social/flex workspace
+- If calendar is packed with focused work → lean toward home/focused environment
+
+Tell the user: **"📍 Suggested location: [Office / Home / Flex workspace] — [one-line reason]"**
+
+### Step 3 — Time-Blocked Schedule
+1. Pull all calendar events for tomorrow
+2. Anchor fixed events first (meetings, calls, appointments)
+3. Identify open blocks for focused work
+4. Reference Ideal Week preferences (deep work blocks, team availability windows)
+
+### Step 4 — Watch For
+Scan for anything time-sensitive landing tomorrow:
+- Basecamp tasks due tomorrow
+- HubSpot tasks due tomorrow
+- Expected email replies or follow-ups noted in today's sweep
+
+### Output Format
+
+```
+## 🌅 Tomorrow Preview — [Weekday, Date]
+
+☁️ [High/Low temp], [conditions]. [Rain/wind flag if any.]
+📍 Suggested: [Office / Home / Flex] — [reason]
+
+⏰ Time Block
+- [Time] — [Calendar event](link)
+- [Time block] — Deep work: [suggested focus area]
+- [Time block] — Available for team / email
+
+👀 Watch for
+- [time-sensitive item or "Nothing flagged"]
+```
 
 ---
 
@@ -175,6 +380,7 @@ The overdue report can show tasks already removed or completed. Never surface st
 - **FYI tasks (dropped by Scott or others):** Always surface these if you are tagged. A tag means someone needs your eyes on it — you still need to see it even if the action belongs to someone else.
 - **Action tasks:** Surface and track as normal action items.
 - **Completed tasks:** Never surface. Verify live before showing.
+- **Due date + reminder:** Set tasks to the next business day at 8:00 AM CDT (= 13:00:00 UTC). Set `hs_task_reminders` to the same timestamp.
 
 ### HubSpot Ticket Rules
 - Emily Wilson owns the ticketing system. She manages all client questions coming in from Basecamp & Kajabi.
@@ -203,13 +409,13 @@ For operations not covered by CLI commands (e.g., creating groups within todolis
 ## Key Contacts & Context
 
 ### RSG Team
-- **Scott** — President/ Co-Founder / Lead Pastor / visionary leader
+- **Scott** — President / Co-Founder / Lead Pastor / visionary leader
 - **Hunter** — Co-Founder / CEO / Visionary Driver
-- **Emily Wilson** — product manager / excutive asssitant to scott & jenni wilson / often relays client questions
-- **Joel Hornstien** — marketing director / lives in Tulsa communtes to Dallas often 
+- **Emily Wilson** — Product manager / executive assistant to Scott & Jenni Wilson / often relays client questions
+- **Joel Hornstien** — Marketing director / lives in Tulsa, commutes to Dallas often
 - **Mark Brewer** — Product Director / direct contact for Pastors
-- **Jenni Wilson** - Events Manager
-- **Brett Bouck** - Video Manager
+- **Jenni Wilson** — Events Manager
+- **Brett Bouck** — Video Manager
 
 ### RSG — Sonamation Partnership
 - Sonamation integration work tracked in **HubSpot & Sonamation** Basecamp project (RSG account 5708130, project ID: 45617297)
@@ -407,12 +613,12 @@ Example: **12:00 PM** — [1:1 with Joel](htmlLink) | [Join Zoom](location_url)
 [Pull live from API each time. Show in this order:]
 
 📲 Pings — [item or "None"]
-📝 Daily Check-ins — 🌅 [What's Your Daily 3?](url) | 🌇 [How'd today go? R.E.P.S.](url) — (or "Done ✅" if answered)
+📝 Daily Check-ins
+  🌅 [What's Your Daily 3?](url) — post by 9 AM (or "Done ✅")
+  🌇 [How'd today go? R.E.P.S.](url) — post by 4 PM (or "Done ✅")
 📋 Tasks — [linked items]
 🔔 Mentions — [linked items]
 💬 All Other — [grouped by project, linked]
-
-Drops off the list when: (a) handled in this conversation → mark read via CLI, or (b) already gone from Basecamp's unread list.
 
 ### Must Do Today
 [Due today + overdue action items only — each hyperlinked]
@@ -428,6 +634,10 @@ Example: - 🔴 [Approve BILL.com payment](https://app.bill.com) — Blue Cross 
 ### Basecamp RSG — Due Today / Overdue (verified)
 [No upcoming tasks. No "due soon." Only verified, assigned, incomplete items.]
 
+### Cycle Rocks (weekly or when asked)
+[Countdown: "Cycle [N] ends [date] — [X] weeks left"]
+[Rock name] — 🟢/🟡/🔴/✅
+
 ### FYI
 [Non-urgent awareness items — linked where possible. Not tasks, just awareness.]
 ```
@@ -436,4 +646,6 @@ Example: - 🔴 [Approve BILL.com payment](https://app.bill.com) — Blue Cross 
 - Tasks = today + overdue only. "Due soon" / upcoming = only when asked.
 - Notifications = always show ALL unread. No date filter. Keep showing until handled.
 - Every single item gets a direct clickable link.
+- Daily 3 is the morning anchor — always prompt if it hasn't been posted by 9 AM.
+- R.E.P.S. is the end-of-day anchor — always prompt if it hasn't been posted by 4 PM.
 - Always end with: "Want me to start tackling any of these?"
