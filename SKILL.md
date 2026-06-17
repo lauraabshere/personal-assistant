@@ -27,25 +27,33 @@ Tell Claude **"Set me up"** or **"Run first-time setup"** to begin.
 
 ### Onboarding Interview
 
-Ask questions **one at a time**, in order. After reading the Ideal Week answer, check whether it already answers Q3–Q6 — only ask what isn't already clear.
+Ask questions **one at a time**, in order. After reading the Ideal Week answer, check whether it already answers Q4–Q7 — only ask what isn't already clear.
 
 ---
 
-**Q1 — Ideal Week** *(always ask first)*
+**Q1 — Name, Title & Email** *(always ask first)*
+
+> "What's your name and title? And what's your work email address?"
+
+Fill these into the "Who I Am" section immediately.
+
+---
+
+**Q2 — Ideal Week** *(always ask)*
 
 > "Do you have an **Ideal Week** document? If yes, share it — paste it here, or share a Notion/Google Doc link. If you don't have one yet, just describe your ideal work week in a few sentences: when do you prefer deep work, when are you available for your team, any protected time blocks?"
 
-Read the response carefully. The Ideal Week often answers office patterns, remote preferences, and calendar trigger rules. Before asking Q3–Q6, check what's already covered and skip those questions.
+Read the response carefully. The Ideal Week often answers office patterns, remote preferences, and calendar trigger rules. Before asking Q4–Q7, check what's already covered and skip those questions.
 
 ---
 
-**Q2 — Location for Weather** *(always ask)*
+**Q3 — Location for Weather** *(always ask)*
 
 > "What city and state are you in? I'll use this for weather in your Tomorrow Preview."
 
 ---
 
-**Q3 — Office Location** *(ask only if not clear from Ideal Week)*
+**Q4 — Office Location** *(ask only if not clear from Ideal Week)*
 
 > "Do you have a regular office or workplace? If yes, what's the location, and what typically puts you there — specific days, certain meeting types, or other conditions?
 >
@@ -55,19 +63,19 @@ If they say no regular office → set **LOCATION_MODE = remote**. If they descri
 
 ---
 
-**Q4 — Remote Work Location** *(ask only if not clear from Ideal Week)*
+**Q5 — Remote Work Location** *(ask only if not clear from Ideal Week)*
 
 > "When you're not in the office, where do you prefer to work? If it's a specific place (a coffee shop, home office, co-working space), tell me its name — I'll use it when suggesting your work location."
 
 ---
 
-**Q5 — Personal Calendar Patterns** *(ask only if not clear from Ideal Week)*
+**Q6 — Personal Calendar Patterns** *(ask only if not clear from Ideal Week)*
 
 > "Are there personal calendar patterns that affect your 8–5 availability? If you add personal appointments to your calendar when they impact your work day, I'll check there too."
 
 ---
 
-**Q6 — HubSpot & Basecamp** *(always ask)*
+**Q7 — HubSpot & Calendar IDs** *(always ask)*
 
 > "Let me look up your HubSpot owner ID automatically." *(call `get_user_details` from the HubSpot MCP, extract `ownerId`)*
 >
