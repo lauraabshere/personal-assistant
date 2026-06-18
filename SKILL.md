@@ -10,6 +10,7 @@ trigger: "start my day | plan my day | morning sweep | mid-day sweep | end of da
 
 - **Name:** [YOUR NAME] — [YOUR TITLE]
 - **Email:** [your@email.com]
+- **City:** [YOUR CITY, STATE]
 - **HubSpot owner ID:** `[YOUR_HUBSPOT_OWNER_ID]`
 - **Basecamp RSG account:** `5708130`
 - **Basecamp CLI path:** `~/.local/bin/basecamp`
@@ -265,7 +266,7 @@ Post in **Momentum Staff HQ → "How'd today go? (Daily R.E.P.S.)"** check-in by
 
 Link: `https://app.basecamp.com/5708130/buckets/35081390/questions/8405160895`
 
-To draft your R.E.P.S., run the `/reps` skill or ask "draft my R.E.P.S." — it will pull your actual Daily 3 from Basecamp automatically.
+To draft your R.E.P.S., ask **"draft my R.E.P.S."** — it will pull your actual Daily 3 from Basecamp automatically.
 
 ---
 
@@ -326,8 +327,9 @@ If the cycle is in its final 2 weeks: flag any rocks still at 🟡 or 🔴 as ur
 At the end of each day (or when asked "what's tomorrow look like?"), generate a Tomorrow Preview:
 
 ### Step 1 — Weather
+Use the **City** value from the "Who I Am" section above:
 ```bash
-curl -s "https://wttr.in/[YOUR_CITY]?format=j1"
+curl -s "https://wttr.in/[YOUR CITY, STATE]?format=j1"
 ```
 Extract: high/low temp, conditions, precipitation chance, wind speed.
 Flag if wind > 20 mph or rain > 30% → note a reminder to check conditions before commuting.
@@ -453,99 +455,24 @@ For operations not covered by CLI commands (e.g., creating groups within todolis
 
 ---
 
-## RSG Product Reference
+## RSG at a Glance
 
-Ready Set Grow helps churches build strong systems and healthy teams. Scott Wilson is the founder (35+ years pastoring). All coaching calls are **every Tuesday at 11am CST** (replay available). Address: 777 S I-35 E, Red Oak, TX 75154.
+Ready Set Grow Church helps churches build strong systems and healthy teams.
 
-### RSG Mastermind (formerly Breaking 500)
-Pre-launch name was **Breaking 500** — rebranded to RSG Mastermind after A/B testing. These are the core membership tiers.
+- **Founder:** Scott Wilson (35+ years pastoring)
+- **Address:** 777 S I-35 E, Red Oak, TX 75154
+- **Website:** https://www.readysetgrowchurch.com
+- **Weekly coaching calls:** Every Tuesday at 11am CST (replay available)
+- **Offers:** RSG Mastermind (Silver / Gold / VIP), Breaking 1000, Double in 3, Impact 10,000 donor program
+- **Annual event:** Impact Celebration at Torrey Pines — invite-only donor gathering (August)
 
-**Front-Facing Offers:**
-
-| Tier | Monthly | Annual | What's Included |
-|------|---------|--------|-----------------|
-| **Silver** | $197/mo | $2,200/yr | 2 seats in Mastermind, weekly coaching calls, 2-day growth plans, quarterly growth plan refresh, all courses, community access, all workshops, 1 church sponsored |
-| **Gold** | $397/mo | $4,367/yr | Everything in Silver + 1 monthly 1:1 Breakthrough Session (30 min), 2 churches sponsored |
-| **VIP** | $997/mo | $10,900/yr | Everything in Gold + 2 monthly 1:1 sessions, monthly office hours, 5 churches sponsored |
-
-**Sales page:** https://www.readysetgrowchurch.com/pricing
-*(June 2026 note: All spots sold out — waitlist only)*
-
-**Not Front-Facing — District/Sponsorship Offer:**
-
-| Tier | Price | Notes |
-|------|-------|-------|
-| **Pay What You Can** | $1–$197/mo | Same as Silver tier. For bi-vocational or smaller churches accessing coaching via donor sponsorship. NOT publicly advertised. |
-
-**District/Sponsorship page:** https://www.readysetgrowchurch.com/district-pricing
+For full product details, pricing, and positioning — refer to the RSG knowledge base.
 
 ---
 
-### Breaking 1000 — Invite-Only Cohort
-For pastors trying to break the **1,000 attendance barrier**. Targeted at churches currently under 1,000.
+## Recurring Tasks
 
-- **Price:** $1,997/mo ($22,000/yr)
-- **Includes:** Everything in Mastermind + unlimited 1:1 Breakthrough Sessions + direct access to Scott (message anytime in client portal, emergency calls) + 10 churches sponsored
-- **Ideal for:** Pastors carrying a lot of responsibility with limited staff, feeling the weight of leadership, needing systems to grow without burning out
-- **Page:** https://www.readysetgrowchurch.com/breaking-1000-pricing
-
----
-
-### Double in 3 — Invite-Only Cohort
-For pastors leading **growing multi-team/multi-campus churches** who want to double kingdom impact in 3 years.
-
-- **Price:** $4,197/mo ($50,000/yr)
-- **Includes:** Everything in Breaking 1000 + exclusive 2-day retreat at Scott & Jenni Wilson's home (pastor + spouse), 21 churches sponsored
-- **Ideal for:** Leaders managing multiple staff, campuses, or departments; dealing with alignment and scaling challenges
-- **Page:** https://www.readysetgrowchurch.com/double-in-3-pricing
-
----
-
-### Impact 10,000 — Donor Strategy / Missional Giving
-Mission: Impact 10,000 communities for Christ by coaching 10,000 churches. Business leaders and church donors **sponsor pastors** who can't afford coaching.
-
-**Key mechanic:** Donors give monthly to sponsor churches into the RSG Mastermind. Donor also receives Mastermind access at the corresponding tier as a thank-you.
-
-| Gift/mo | Pastors Sponsored | Donor Receives |
-|---------|-------------------|----------------|
-| $200 | 1 pastor | Newsletter + RSG Mastermind (Silver) |
-| $400 | 2 pastors | Newsletter + Mastermind Gold |
-| $1,000 | 5 pastors | Newsletter + Mastermind VIP |
-| $2,000 | 10 pastors | Newsletter + Quarterly impact reports + Breaking 1,000 access |
-| $4,200 | 21 pastors | Newsletter + Quarterly impact reports + Double in 3 access |
-| Custom ($55K+/yr) | 22+ pastors | All above + RSG Impact Partner status |
-
-- **Page:** https://www.readysetgrowchurch.com/impact-10000
-- **Torrey Pines event** is tied to this program (see below)
-
----
-
-### Impact Celebration at Torrey Pines — Annual Donor Event
-Invite-only gathering of ~60 Kingdom partners (business leaders + major donors) who support the Impact 10,000 vision.
-
-- **Location:** The Lodge at Torrey Pines (La Jolla/San Diego area)
-- **2026 Dates:** August 17–19
-- **What's covered:** 2 nights for attendee + spouse, 2 days of golf at Torrey Pines
-- **Schedule:**
-  - Mon Aug 17: Arrival, Welcome & Dessert Reception (7pm)
-  - Tue Aug 18: Golf, Impact Celebration Banquet (6:30pm)
-  - Wed Aug 19: Golf, Awards Lunch + Commitment Announcements + Golf Prizes → Check-out
-- **Purpose:** Donor cultivation, commitment announcements (pledges for the year), celebrating impact
-- **Page:** https://www.readysetgrowchurch.com/impact-celebration
-- **HubSpot:** Torrey Pines is tracked as a pipeline/event in the Lead Stage Tracker
-
----
-
-## Recurring Weekly Tasks (RSG)
-Every Wednesday:
-- Review the R&P (Review & Preview) Agenda
-- Publish the Donor Retention Strategy Agenda
-
-Every Tuesday (after Mark's 1:1):
-- 75-minute block to map Quest Agendas for the rest of the cycle
-
-Every Monday:
-- Send Cash Flow to Scott & Hunter (Finance HQ)
+When planning the day or drafting a Daily 3, check Basecamp and HubSpot for any recurring tasks that are due today. Do not assume a fixed list — pull from live data. Recurring tasks vary by team member and change over time.
 
 ---
 
@@ -666,11 +593,6 @@ Look for:
 ```
 
 End with: **"Want me to handle any of these?"**
-
----
-
-## Web Browsing
-Always use the `/browse` skill for any web navigation. Never use Chrome MCP tools directly.
 
 ---
 
