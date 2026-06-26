@@ -382,6 +382,13 @@ Scan for anything time-sensitive landing tomorrow:
 **ALWAYS verify live task status with `basecamp todos show <id>` before surfacing any task.**
 The overdue report can show tasks already removed or completed. Never surface stale data.
 
+**Think like an executive admin or strategic partner — verify the work hasn't already been done before surfacing any reminder:**
+
+- **Basecamp tasks:** Check `basecamp todos show <id>` — if completed or removed, don't surface it.
+- **Email follow-up recommendations:** Before suggesting a follow-up with a contact, check their recent activity (emails, calls, notes in HubSpot). If there's been recent contact, say: *"It looks like you contacted [name] on [date] — want me to mark that task complete, or do you need to schedule an additional follow-up?"*
+- **HubSpot tasks:** Check the contact's activity timeline for notes, calls, or emails that indicate the task's purpose has already been fulfilled. Don't remind someone to do something that's already done.
+- **General principle:** If the purpose of a task was to get someone to do X and they did X, the task is done even if it isn't formally closed. Surface intelligent context, not just reminders.
+
 ### What to Never Surface
 - Do not surface tasks that are completed (verify live)
 - Do not surface tasks not actually assigned to you
